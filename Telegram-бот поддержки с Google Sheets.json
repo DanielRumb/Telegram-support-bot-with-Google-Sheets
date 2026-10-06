@@ -1,0 +1,788 @@
+{
+  "name": "Telegram-бот поддержки с Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -256,
+        -496
+      ],
+      "id": "be7a17b1-a54f-49b0-9362-ded04d406a45",
+      "name": "Telegram Trigger",
+      "webhookId": "acb86a10-01a9-44fd-abff-5c4c8e3cf03f",
+      "credentials": {
+        "telegramApi": {
+          "id": "dWRSSgi2lRQI7gHn",
+          "name": "Telegram account 1598"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d047641d-50a2-4916-946e-df5c79a1d118",
+              "name": "message.from.id",
+              "value": "={{ $json.message.from.id }}",
+              "type": "number"
+            },
+            {
+              "id": "e89b5ecb-d128-47b5-9d9e-a1e9cfe2c2b2",
+              "name": "message.from.username",
+              "value": "={{ $json.message.from.username }}",
+              "type": "string"
+            },
+            {
+              "id": "b63bce6a-a135-4422-948c-9a984610a2b9",
+              "name": "message.text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "30e476e0-ddef-4c21-b1b8-0961157a3698",
+              "name": "message.date",
+              "value": "={{ DateTime.fromSeconds($json.message.date).toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -96,
+        -496
+      ],
+      "id": "3f32095e-9983-4fc7-8140-f518b928341a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1hAzazRYIk1-NE5bvLFMKZO-HYkbaUe1X77zI_MFgL_U",
+          "mode": "list",
+          "cachedResultName": "Support Inbox",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hAzazRYIk1-NE5bvLFMKZO-HYkbaUe1X77zI_MFgL_U/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Tickets",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hAzazRYIk1-NE5bvLFMKZO-HYkbaUe1X77zI_MFgL_U/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telegram_id": "={{ $('Edit Fields').item.json.message.from.id }}",
+            "username": "={{ $('Edit Fields').item.json.message.from.username }}",
+            "message": "={{ $('Edit Fields').item.json.message.text }}",
+            "first_message_at": "={{ $('Edit Fields').item.json.message.date }}",
+            "last_message_at": "={{ $('Edit Fields').item.json.message.date }}",
+            "is_repeat": "No",
+            "repeat_count": "1"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telegram_id",
+              "displayName": "telegram_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "first_message_at",
+              "displayName": "first_message_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "last_message_at",
+              "displayName": "last_message_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "is_repeat",
+              "displayName": "is_repeat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "repeat_count",
+              "displayName": "repeat_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        -416
+      ],
+      "id": "11ad73b6-f4a0-419e-ae09-5f7aec6ea059",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0nozAKeeq5hfTEcj",
+          "name": "Google Sheets account 8062146"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1hAzazRYIk1-NE5bvLFMKZO-HYkbaUe1X77zI_MFgL_U",
+          "mode": "list",
+          "cachedResultName": "Support Inbox",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hAzazRYIk1-NE5bvLFMKZO-HYkbaUe1X77zI_MFgL_U/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Tickets",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hAzazRYIk1-NE5bvLFMKZO-HYkbaUe1X77zI_MFgL_U/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "telegram_id",
+              "lookupValue": "={{ $json.message.from.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        64,
+        -496
+      ],
+      "id": "234bc56f-f223-4e42-bb58-07b74215b22d",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0nozAKeeq5hfTEcj",
+          "name": "Google Sheets account 8062146"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4c534108-2d51-4bd8-9549-96123afe7478",
+              "leftValue": "={{ $json.telegram_id }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        -496
+      ],
+      "id": "e1125589-348f-4965-a7ed-5538630a3b71",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hAzazRYIk1-NE5bvLFMKZO-HYkbaUe1X77zI_MFgL_U",
+          "mode": "list",
+          "cachedResultName": "Support Inbox",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hAzazRYIk1-NE5bvLFMKZO-HYkbaUe1X77zI_MFgL_U/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Tickets",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hAzazRYIk1-NE5bvLFMKZO-HYkbaUe1X77zI_MFgL_U/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "last_message_at": "={{ $('Edit Fields').item.json.message.date }}",
+            "is_repeat": "Yes",
+            "repeat_count": "={{ $json.repeat_count + 1 }}",
+            "telegram_id": "={{ $json.telegram_id }}"
+          },
+          "matchingColumns": [
+            "telegram_id"
+          ],
+          "schema": [
+            {
+              "id": "telegram_id",
+              "displayName": "telegram_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "first_message_at",
+              "displayName": "first_message_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "last_message_at",
+              "displayName": "last_message_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "is_repeat",
+              "displayName": "is_repeat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "repeat_count",
+              "displayName": "repeat_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        -576
+      ],
+      "id": "7a4d778e-5d45-4027-941a-f55ecee46752",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0nozAKeeq5hfTEcj",
+          "name": "Google Sheets account 8062146"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Task 1\n\nTelegram support bot",
+        "height": 144,
+        "width": 294
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -624,
+        -512
+      ],
+      "typeVersion": 1,
+      "id": "77500827-8a6f-45d7-9b18-052bf1f68e18",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app4CgvNclq6qm9l9",
+          "mode": "list",
+          "cachedResultName": "Manager Lead Task",
+          "cachedResultUrl": "https://airtable.com/app4CgvNclq6qm9l9"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblU2DVoIO9NenNLh",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://airtable.com/app4CgvNclq6qm9l9/tblU2DVoIO9NenNLh"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        -240
+      ],
+      "id": "754fbba1-45a9-4c94-a8b8-44f6b8f0ed1d",
+      "name": "Search records",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "leZn8cv9Y5mZs62o",
+          "name": "Airtable Personal Access Token account 331"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app4CgvNclq6qm9l9",
+          "mode": "list",
+          "cachedResultName": "Manager Lead Task",
+          "cachedResultUrl": "https://airtable.com/app4CgvNclq6qm9l9"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyS4nNFVWhoKU53",
+          "mode": "list",
+          "cachedResultName": "Orders",
+          "cachedResultUrl": "https://airtable.com/app4CgvNclq6qm9l9/tblyS4nNFVWhoKU53"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        -64
+      ],
+      "id": "6a37fafc-c559-4010-9c21-8dd9392cee88",
+      "name": "Search records1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "leZn8cv9Y5mZs62o",
+          "name": "Airtable Personal Access Token account 331"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        -144
+      ],
+      "id": "f6c42e04-fb74-4b90-8818-4e8b6b54f62d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "fields.lead_email",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        176,
+        -144
+      ],
+      "id": "47163f11-75bd-40f2-aeec-fdc31398abf5",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app4CgvNclq6qm9l9",
+          "mode": "list",
+          "cachedResultName": "Manager Lead Task",
+          "cachedResultUrl": "https://airtable.com/app4CgvNclq6qm9l9"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyS4nNFVWhoKU53",
+          "mode": "list",
+          "cachedResultName": "Orders",
+          "cachedResultUrl": "https://airtable.com/app4CgvNclq6qm9l9/tblyS4nNFVWhoKU53"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_email": "={{ $json.fields.lead_email }}",
+            "manager": "={{ $json.fields.manager }}"
+          },
+          "matchingColumns": [
+            "lead_email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "order_id",
+              "displayName": "order_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "lead_email",
+              "displayName": "lead_email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "total_sum",
+              "displayName": "total_sum",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "manager",
+              "displayName": "manager",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -208
+      ],
+      "id": "ab1459d7-5cfd-481a-8f5a-45981730b64b",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "leZn8cv9Y5mZs62o",
+          "name": "Airtable Personal Access Token account 331"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Task 2 \nAnalysis of sales managers' performance)",
+        "width": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -624,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "ffbb556a-b6ca-401c-9229-6df63585e2b6",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Берём ВСЕХ лидов (для подсчёта конверсии)\nconst leads = $('Search records').all().map(i => i.json.fields);\n\n// Берём заказы с менеджерами\nconst orders = $input.all().map(i => i.json.fields);\n\n// 1. Считаем количество лидов на каждого менеджера\nconst leadCounts = {};\nfor (const l of leads) {\n  const m = l.manager;\n  leadCounts[m] = (leadCounts[m] || 0) + 1;\n}\n\n// 2. Считаем сумму продаж и кол-во заказов на каждого менеджера\nconst managerStats = {};\nfor (const o of orders) {\n  const m = o.manager;\n  if (!managerStats[m]) managerStats[m] = { full_sum: 0, order_count: 0 };\n  managerStats[m].full_sum += Number(o.total_sum);\n  managerStats[m].order_count += 1;\n}\n\n// 3. Собираем итоговую таблицу по всем менеджерам\nconst result = Object.keys(leadCounts).map(manager => {\n  const stats = managerStats[manager] || { full_sum: 0, order_count: 0 };\n  const leadCount = leadCounts[manager];\n  const conversion = leadCount > 0 ? stats.order_count / leadCount : 0;\n  return {\n    manager,\n    full_sum: stats.full_sum,\n    conversion: Number(conversion.toFixed(2)),\n  };\n});\n\n// 4. Сортируем по full_sum и помечаем 3 худших на увольнение\nresult.sort((a, b) => a.full_sum - b.full_sum);\nresult.forEach((r, idx) => {\n  r.fire = idx < 3 ? 'Yes' : 'No';\n});\n\nreturn result.map(r => ({ json: r }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        -32
+      ],
+      "id": "30005f6d-9091-46d9-acc5-7f9b8a2100b9",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "manager_metrics",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        624,
+        -32
+      ],
+      "id": "326b7739-3fdf-4f50-9bad-0ac6e743e98c",
+      "name": "Convert to File"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Search records",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Search records1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "83e459a7-2ba8-42b3-8f3e-af2dcbe66185",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f4300700b5a89163b88ad6a908ff9e3076c705e8b03a3f40f03ff2f29f7e4289"
+  },
+  "nodeGroups": [],
+  "id": "Px4wpYTlF8Nn3EfJ",
+  "tags": []
+}
